@@ -69,6 +69,8 @@ class Pregunta(models.Model):
     id_tipo_pregunta = models.ForeignKey('Tipopregunta', models.DO_NOTHING, db_column='id_tipo_pregunta', blank=True, null=True)
     titulo = models.CharField(max_length=100)
     fecha_creacion = models.DateField(blank=True, null=True)
+    imagen = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
+
     def __str__(self):
         return self.titulo
     class Meta:
