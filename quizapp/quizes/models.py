@@ -42,9 +42,9 @@ class Examen(models.Model):
         return f"{self.titulo} - {self.id_curso}"
 
     def get_preguntas(self):
-        questions = list(self.question_set.all())
+        questions = list(self.pregunta_set.all())
         random.shuffle(questions)
-        return questions[:self.number_of_questions]
+        return questions[:self.numero_preguntas]
 
     class Meta:
         managed = False
@@ -112,17 +112,21 @@ class Usuario(models.Model):
     apellido = models.CharField(max_length=250)
     correo = models.CharField(max_length=250)
     password = models.CharField(max_length=250)
-
+    
+    def __str__(self):
+        return self.apellido
     class Meta:
         managed = False
         db_table = 'usuario'
 
-
-class Usuarioexamen(models.Model):
-    id_usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+class Resultado(models.Model):
+    id_resultado = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
     id_examen = models.ForeignKey(Examen, models.DO_NOTHING, db_column='id_examen', blank=True, null=True)
     nota = models.BigIntegerField(blank=True, null=True)
-
+    
+    def __str__(self):
+        return f"Apellido: {self.id_usuario} -  Examen: {self.id_examen} -  Nota: {self.nota}"
     class Meta:
         managed = False
-        db_table = 'usuarioexamen'
+        db_table = 'resultado'
