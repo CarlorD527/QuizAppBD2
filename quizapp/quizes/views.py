@@ -1,8 +1,11 @@
+from asyncio.windows_events import NULL
 from django.shortcuts import render
 from .models import *
 from django.views.generic import ListView
 from django.http import JsonResponse    
 from django.shortcuts import render, HttpResponse
+from django.db import connection
+import cx_Oracle
 # Create your views here.
 
 class VistaListaExamenes(ListView):
@@ -78,3 +81,38 @@ def save_quiz_view(request, pk):
             return JsonResponse({'passed': True, 'score': score_, 'results': results})
         else:
             return JsonResponse({'passed': False, 'score': score_, 'results': results})
+
+def cursos_view(request):
+    data = {
+        'cursos':listado_cursos()
+    }
+    nombre = request.POST.get('nombre')
+    if request.method == 'POST' and nombre!='':
+        salida = agregar_curso(nombre)
+        nombre = ''
+        if salida == 1:
+                data['mensaje'] = 'agregado correctamente'
+        else:
+            data['mensaje'] = 'no se ha podido guardar'
+  
+    return render(request, 'quizes/cursos.html',data)
+
+def listado_cursos():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    
+    cursor.callproc("SP_LISTAR_CURSOS",[out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+
+    return lista
+
+def agregar_curso(nombre):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('SP_AGREGAR_CURSO', [nombre,salida])
+    return salida.getvalue()
