@@ -1,10 +1,13 @@
 from asyncio.windows_events import NULL
+from pickle import NONE
 from django.shortcuts import render
 from .models import *
 from django.views.generic import ListView
 from django.http import JsonResponse    
 from django.shortcuts import render, HttpResponse
 from django.db import connection
+from django.shortcuts import redirect, reverse
+from django.contrib.auth import views 
 import cx_Oracle
 # Create your views here.
 
@@ -47,7 +50,7 @@ def save_quiz_view(request, pk):
             questions.append(id_pregunta)
         print(questions)
 
-        user = Usuario.objects.get(pk=pk)
+        user = Usuario.objects.get(pk=1)
         quiz = Examen.objects.get(pk=pk)
 
         score = 0
@@ -86,17 +89,22 @@ def cursos_view(request):
     data = {
         'cursos':listado_cursos()
     }
-    nombre = request.POST.get('nombre')
-    if request.method == 'POST' and nombre!='':
+ 
+    if request.method == 'POST':
+ 
+        nombre = request.POST.get('nombre')
         salida = agregar_curso(nombre)
-        nombre = ''
+     
         if salida == 1:
-                data['mensaje'] = 'agregado correctamente'
+                data['mensaje'] = 'agregado correctamente' 
+                data['cursos'] = listado_cursos()    
+                return  redirect('/cursos/')
         else:
             data['mensaje'] = 'no se ha podido guardar'
-  
+ 
+            
     return render(request, 'quizes/cursos.html',data)
-
+    
 def listado_cursos():
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -116,3 +124,11 @@ def agregar_curso(nombre):
     salida = cursor.var(cx_Oracle.NUMBER)
     cursor.callproc('SP_AGREGAR_CURSO', [nombre,salida])
     return salida.getvalue()
+
+def eliminar_curso(request, pk):
+    
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc('SP_BORRAR_CURSO',[pk])
+
+    return redirect('/cursos')

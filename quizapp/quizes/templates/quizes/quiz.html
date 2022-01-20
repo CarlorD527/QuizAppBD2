@@ -19,12 +19,12 @@
     <div class="col text-right" id="timer-box"></div>
 </div>
 
-<a href="{% url 'quizes:vista-principal' %}" class="btn btn-danger">go back</a>
+<a href="{% url 'quizes:vista-principal' %}" class="btn btn-danger">Regresar</a>
 
 <form id="quiz-form" class="mt-3 mb-3">
     {% csrf_token %}
     <div id="quiz-box"></div>
-    <button type="submit" class="btn btn-primary mt-3">save</button>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
 </form>
 <div id="score-box"></div>
 <div id="result-box"></div>

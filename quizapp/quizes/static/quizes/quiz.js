@@ -104,7 +104,7 @@ const sendData = () => {
             console.log(results)
             quizForm.classList.add('not-visible')
 
-            scoreBox.innerHTML = `${response.passed ? 'Congratulations! ' : 'Ups..:( '}Your result is ${response.score.toFixed(2)}%`
+            scoreBox.innerHTML = `${response.passed ? 'Felicitaciones! ' : 'Ups..:( '}Tu resultado es ${response.score.toFixed(2)}%`
 
             results.forEach(res=>{
                 const resDiv = document.createElement("div")
@@ -124,11 +124,11 @@ const sendData = () => {
 
                         if (answer == correct) {
                             resDiv.classList.add('bg-success')
-                            resDiv.innerHTML += ` answered: ${answer}`
+                            resDiv.innerHTML += `Respondido: ${answer}`
                         } else {
                             resDiv.classList.add('bg-danger')
-                            resDiv.innerHTML += ` | correct answer: ${correct}`
-                            resDiv.innerHTML += ` | answered: ${answer}`
+                            resDiv.innerHTML += ` | Respuesta correcta: ${correct}`
+                            resDiv.innerHTML += ` | Respondido: ${answer}`
                         }
                     }
                 }
