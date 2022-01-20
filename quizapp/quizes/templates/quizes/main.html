@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block scripts %}
-    <script src="{% static 'quizes/main.js' %}" defer></script> 
+<script src="{% static 'quizes/main.js' %}" defer></script>
 {% endblock scripts %}
 
 {% block title %}
@@ -30,20 +30,15 @@ home
   </div>
 </div>
 
-<div class="h1">Lista de Examenes</div>
+
+<div class="h3">Lista de Examenes</div>
 <hr>
 {% for obj in object_list %}
-    <button
-        class="btn btn-link modal-button"
-        data-pk="{{obj.id_examen}}"
-        data-quiz="{{obj.titulo}}"
-        data-questions="{{obj.numero_preguntas}}"
-        data-time="{{obj.duracion }}"
-        data-pass = "{{obj.puntaje_requerido}}"
-        data-toggle="modal"
-        data-target="#quizStartModal">
-        {{obj.titulo}}
-    </button><br>
+<button class="btn btn-link modal-button" data-pk="{{obj.id_examen}}" data-quiz="{{obj.titulo}}"
+  data-questions="{{obj.numero_preguntas}}" data-time="{{obj.duracion }}" data-pass="{{obj.puntaje_requerido}}"
+  data-toggle="modal" data-target="#quizStartModal">
+  {{obj.titulo}}
+</button><br>
 
 {% endfor %}
 {% endblock content %}

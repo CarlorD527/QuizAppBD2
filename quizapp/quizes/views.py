@@ -125,6 +125,7 @@ def agregar_curso(nombre):
     cursor.callproc('SP_AGREGAR_CURSO', [nombre,salida])
     return salida.getvalue()
 
+
 def eliminar_curso(request, pk):
     
     django_cursor = connection.cursor()
